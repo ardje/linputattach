@@ -15,6 +15,7 @@ M.speed=B9600
 
 function M:new()
 	local o={}
+	o.tcattr={}
 	o.tcattr.cflag=p.CS8 +p.CREAD+p.HUPCL + p.CLOCAL
 	o.tcattr.iflag=p.IGNBRK+p.IGNPAR
 	o.tcattr.oflag=0

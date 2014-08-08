@@ -50,11 +50,11 @@ function M:open(n)
 	end
 	fd,err=assert(p.open(tty,p.O_RDWR + p.O_NOCTTY+ p.O_NONBLOCK))
 	--print(self.tcattr)
-	local tcattr=p.tcgetattr(fd)
-	self.tcattr=tcattr
-	self:_setflags()
-	self:setflags()
-	p.tcsetattr(fd, p.TCSANOW, tcattr)
+	--local tcattr=p.tcgetattr(fd)
+	--self.tcattr=tcattr
+	--self:_setflags()
+	--self:setflags()
+	p.tcsetattr(fd, p.TCSANOW, self.tcattr)
 	o.fd=fd
 	o.tty=tty
 	return o

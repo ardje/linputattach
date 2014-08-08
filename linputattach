@@ -1,0 +1,25 @@
+#!/usr/bin/lua
+local daemonize=0
+function usage()
+	io.write([[
+Usage:
+	lattach [--daemon] driver device
+	]])
+end
+if arg[1] == "--daemon" then
+	daemonize=1
+	table.remove(arg,1)
+end
+local driver=arg[1]
+local device=arg[2]
+if device == nil or driver == nil then
+	io.write("Error: I need a driver and a device name\n")
+	usage()
+	os.exit(1)
+end
+
+local td=require("touch."..driver)
+local ts=td:open{tty=device}
+ts:attach()
+
+

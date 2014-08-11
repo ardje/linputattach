@@ -1,4 +1,5 @@
 #!/usr/bin/lua
+local d=require "daemonize"
 local daemonize=0
 function usage()
 	io.write([[
@@ -19,6 +20,9 @@ if device == nil or driver == nil then
 end
 
 local td=require("touch."..driver)
+if daemonize > 0 then
+	d.daemonize("lattach")
+end
 local ts=td:open{tty=device}
 ts:attach()
 

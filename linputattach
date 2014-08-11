@@ -1,5 +1,5 @@
 #!/usr/bin/lua
-package.path="/etc/touch/?.lua;"..package.path
+package.path="/etc/linputattach/?.lua;"..package.path
 local d=require "daemonize"
 local daemonize=0
 function usage()

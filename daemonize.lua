@@ -19,7 +19,7 @@ function M.daemonize(name, path, stdout, stderr, stdin)
 	end
 	posix.umask(0)
 	posix.chdir(path)
-	for i =1,posix.sysconf("OPEN_MAX") do
+	for i =0,posix.sysconf("OPEN_MAX") do
 		posix.close(i)
 	end
 	io.stdin=io.open(stdin,"r")

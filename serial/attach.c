@@ -1,5 +1,6 @@
 #include <lua.h>
 #include <lauxlib.h>
+#include <lua_compat.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/serio.h>
@@ -10,6 +11,18 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
+
+#if LUA_VERSION_NUM == 501
+#define lua_tounsigned(L, idx) (lua_tonumber(L, idx))
+#define lua_pushunsigned(L, val) (lua_pushnumber(L, (lua_Number)val))
+#define luaL_checkunsigned(L, narg) (luaL_checknumber(L, narg))
+#define luaL_len(L, idx) (lua_objlen(L, idx))
+#elif LUA_VERSION_NUM == 502
+#elif LUA_VERSION_NUM == 503
+#define lua_tounsigned(L, idx) (lua_tointeger(L, idx))
+#define lua_pushunsigned(L, val) (lua_pushinteger(L, (lua_Integer)val))
+#define luaL_checkunsigned(L, narg) (luaL_checkinteger(L, narg))
+#endif
 
 static int pusherror(lua_State *L, const char *info)
 {
@@ -55,12 +68,12 @@ static int Psettype(lua_State *L)
 
 
 static const struct luaL_Reg mylib [] = {
-{"setldisc", Psetldisc},
-{"settype", Psettype},
-{NULL, NULL} /* sentinel */
+	{"setldisc", Psetldisc},
+	{"settype", Psettype},
+	{NULL, NULL} /* sentinel */
 };
 
 int luaopen_serial_attach (lua_State *L) {
-luaL_newlib(L, mylib);
-return 1;
+	luaL_newlib(L, mylib);
+	return 1;
 }

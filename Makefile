@@ -4,25 +4,16 @@ LIBDEST=/usr/lib/$(shell uname -m)-linux-gnu
 binary: liblua5.2-attach.so liblua5.1-attach.so
 .PHONY: binary
 
-liblua5.2-attach.so: attach.c
+attach.so: attach.c
 	$(CC) -Wall $^ -shared -fpic $(shell pkg-config lua5.2 --cflags) -llua5.2 -o $@
-
-liblua5.1-attach.so: attach.c
-	$(CC) -Wall $^ -shared -fpic $(shell pkg-config lua5.1 --cflags) -llua5.1 -o $@
-
-liblua5.3-attach.so: attach.c
-	$(CC) -Wall $^ -shared -fpic $(shell pkg-config lua5.3 --cflags) -llua5.3 -o $@
-
-rsync: serial/attach.so
-	rsync -va touch serial daemonize.lua linputattach 192.168.0.175::root/root/inputattach/
 
 clean:
 	-rm -f *.so
 .PHONY: clean
 
 install:
-	install -d $(DESTDIR)/usr/share/lua/5.1/touch
-	install -m 0644 daemonize.lua $(DESTDIR)/usr/share/lua/5.1
+	install -d $(LUA_LIBDIR)/touch
+	install -m 0644 daemonize.lua $(LUA_LIBDIR)
 	install -m 0644 touch/* $(DESTDIR)/usr/share/lua/5.1/touch
 	install -d $(DESTDIR)/usr/share/lua/5.2/touch
 	install -m 0644 daemonize.lua $(DESTDIR)/usr/share/lua/5.2

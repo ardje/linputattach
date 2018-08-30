@@ -1,4 +1,4 @@
-Source: inputattach
+Source: linputattach
 Section: unknown
 Priority: extra
 Maintainer: ard <ard@kwaak.net>
@@ -8,7 +8,7 @@ Homepage: <insert the upstream URL, if relevant>
 #Vcs-Git: git://git.debian.org/collab-maint/inputattach.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/inputattach.git;a=summary
 
-Package: inputattach
+Package: linputattach
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, lua-posix(>=31-1)
 Description: <insert up to 60 chars description>

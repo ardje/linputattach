@@ -1,6 +1,5 @@
 #include <lua.h>
 #include <lauxlib.h>
-#include <lua_compat.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/serio.h>
@@ -12,17 +11,6 @@
 #include <termios.h>
 #include <unistd.h>
 
-#if LUA_VERSION_NUM == 501
-#define lua_tounsigned(L, idx) (lua_tonumber(L, idx))
-#define lua_pushunsigned(L, val) (lua_pushnumber(L, (lua_Number)val))
-#define luaL_checkunsigned(L, narg) (luaL_checknumber(L, narg))
-#define luaL_len(L, idx) (lua_objlen(L, idx))
-#elif LUA_VERSION_NUM == 502
-#elif LUA_VERSION_NUM == 503
-#define lua_tounsigned(L, idx) (lua_tointeger(L, idx))
-#define lua_pushunsigned(L, val) (lua_pushinteger(L, (lua_Integer)val))
-#define luaL_checkunsigned(L, narg) (luaL_checkinteger(L, narg))
-#endif
 
 static int pusherror(lua_State *L, const char *info)
 {
@@ -38,7 +26,7 @@ static int pusherror(lua_State *L, const char *info)
 static int Psetldisc(lua_State *L)
 {
 
-	int fd = luaL_checkint(L, 1);
+	int fd = luaL_checkinteger(L, 1);
 	int ldisc = luaL_optinteger(L,2,N_MOUSE);
         if (ioctl(fd, TIOCSETD, &ldisc) < 0) {
 		return pusherror(L, "setldisc: can't set line discipline");
@@ -50,10 +38,10 @@ static int Psetldisc(lua_State *L)
 static int Psettype(lua_State *L)
 {
 
-	int fd = luaL_checkint(L, 1);
-	unsigned type = luaL_checkunsigned(L,2);
-	unsigned id= luaL_optunsigned(L,3,0);
-	unsigned extra=luaL_optunsigned(L,4,0);
+	int fd = luaL_checkinteger(L, 1);
+	unsigned type = luaL_checkinteger(L,2);
+	unsigned id= luaL_optinteger(L,3,0);
+	unsigned extra=luaL_optinteger(L,4,0);
 	unsigned long devt;
         devt = type | (id << 8) | (extra << 16);
 
